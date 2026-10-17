@@ -6,18 +6,21 @@ services:
     build:
       context: ..
       dockerfile: seidor-es-cl/Dockerfile
-    environment: [PORT=3000]
-    ports: ["5002:3000"]
+    environment: [PORT=3000, WORKERS=2]
+    ports: ["127.0.0.1:5002:3000"]
+    mem_limit: 3g
     restart: unless-stopped
   anonymizer:
     build: ../presidio-anonymizer
     environment: [PORT=3000]
-    ports: ["5001:3000"]
+    ports: ["127.0.0.1:5001:3000"]
+    mem_limit: 512m
     restart: unless-stopped
   image-redactor:
     build:
       context: ..
       dockerfile: seidor-es-cl/Dockerfile.image-redactor
     environment: [PORT=3000]
-    ports: ["5003:3000"]
+    ports: ["127.0.0.1:5003:3000"]
+    mem_limit: 3g
     restart: unless-stopped

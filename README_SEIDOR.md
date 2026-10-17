@@ -5,7 +5,7 @@ Fork de `microsoft/presidio` con extensiones en `seidor-es-cl/` (rama `feature/e
 ## Cómo levantar todo
 
 ```bash
-# 1) Servicios (analyzer ES+CL, anonymizer, image-redactor con OCR en español). Sin Ollama ni servicios externos.
+# 1) Servicios (puertos solo en 127.0.0.1) (analyzer ES+CL, anonymizer, image-redactor con OCR en español). Sin Ollama ni servicios externos.
 docker compose -f seidor-es-cl/docker-compose.es-cl.yml up -d --build
 
 # 2) Verificación
@@ -58,6 +58,7 @@ Streamlit :8501 ─► librería in-process, o REST al analyzer
 - **Falsos positivos de spaCy es**: `PERSON`/`LOCATION`/`ORGANIZATION` ruidosos en textos estructurados (p. ej. "Orden" → ORGANIZATION, "Teléfono" → LOCATION, `J45.9\nPrevisión:` → PERSON). Requiere umbral, allow-lists y/o un modelo NER afinado.
 - **Doble detección de teléfono**: el recognizer genérico `PHONE_NUMBER` (score 0.4) coexiste con `CL_PHONE_NUMBER`; deduplicar por entidad en el consumidor.
 - **Salud en español**: el recognizer es de palabras clave; detecta *términos*, no datos de salud de una persona. Alta tasa de FP/FN, sin contexto clínico real. Experimental.
+- **RUT sin separadores en CSV**: se detecta pero con score ~0.05, porque la cabecera `rut` queda fuera de la ventana de contexto. En planillas conviene usar el nombre de columna como señal (p. ej. un paso previo que anteponga la cabecera a cada celda).
 - **Solo dígitos**: RUT sin separadores es indistinguible de otros números de 8–9 dígitos sin contexto (1 de cada 11 números aleatorios pasa el DV). Se mitiga con score bajo + contexto.
 - **OCR**: probado solo con un escaneado sintético limpio; no representa escaneos reales (ruido, inclinación, baja resolución). El image-redactor opera sobre **imágenes**, no PDF: un PDF escaneado debe rasterizarse antes. En la redacción del teléfono quedó un fragmento sin cubrir (el bbox por token no cubre bien el `+56 9 …`).
 - Los fixtures PDF/CSV se inventarían leyendo texto (PyMuPDF); el PDF escaneado no tiene capa de texto y se omite en el inventario (requiere OCR).

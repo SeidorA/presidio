@@ -112,7 +112,9 @@ record("documento_texto_09.pdf", valid=[r])
 # 10 PDF escaneado (solo imagen) + PNG
 n, r = name(), valid_rut("dots")
 lines = ["CERTIFICADO MEDICO", f"Paciente: {n}", f"RUT: {r}", "Diagnostico: Asma J45.9", f"Telefono: {phone()}"]
-font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial.ttf", 44)
+FONTS = ["/System/Library/Fonts/Supplemental/Arial.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"]
+font_path = next((f for f in FONTS if Path(f).exists()), None)
+font = ImageFont.truetype(font_path, 44) if font_path else ImageFont.load_default(44)
 img = Image.new("RGB", (1240, 700), "white")
 d = ImageDraw.Draw(img)
 for i, line in enumerate(lines):
