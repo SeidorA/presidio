@@ -1,4 +1,6 @@
 import logging
+import sys
+from pathlib import Path
 from typing import Tuple
 
 import spacy
@@ -10,6 +12,15 @@ from presidio_analyzer.nlp_engine import (
 
 logger = logging.getLogger("presidio-streamlit")
 
+# Seidor ES/CL extensions (Chile recognizers), kept outside the Presidio core.
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / "seidor-es-cl"))
+
+
+def spacy_lang_code(model_path: str) -> str:
+    """Infer the language from a spaCy model name (es_core_news_lg -> es)."""
+    prefix = model_path.split("_")[0]
+    return prefix if len(prefix) == 2 else "en"
+
 
 def create_nlp_engine_with_spacy(
     model_path: str,
@@ -17,10 +28,12 @@ def create_nlp_engine_with_spacy(
     """
     Instantiate an NlpEngine with a spaCy model
     :param model_path: path to model / model name.
+    For Spanish models (es_*), the Chile recognizers (RUT, phone, health) are added.
     """
+    lang = spacy_lang_code(model_path)
     nlp_configuration = {
         "nlp_engine_name": "spacy",
-        "models": [{"lang_code": "en", "model_name": model_path}],
+        "models": [{"lang_code": lang, "model_name": model_path}],
         "ner_model_configuration": {
             "model_to_presidio_entity_mapping": {
                 "PER": "PERSON",
@@ -37,13 +50,18 @@ def create_nlp_engine_with_spacy(
             },
             "low_confidence_score_multiplier": 0.4,
             "low_score_entity_names": ["ORG", "ORGANIZATION"],
+            "labels_to_ignore": ["MISC"] if lang == "es" else [],
         },
     }
 
     nlp_engine = NlpEngineProvider(nlp_configuration=nlp_configuration).create_engine()
 
-    registry = RecognizerRegistry()
-    registry.load_predefined_recognizers(nlp_engine=nlp_engine)
+    registry = RecognizerRegistry(supported_languages=[lang])
+    registry.load_predefined_recognizers(languages=[lang], nlp_engine=nlp_engine)
+    if lang == "es":
+        from seidor_cl import register_cl_recognizers
+
+        register_cl_recognizers(registry, "es")
 
     return nlp_engine, registry
 

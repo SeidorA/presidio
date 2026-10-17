@@ -82,7 +82,11 @@ def analyzer_engine(
     nlp_engine, registry = nlp_engine_and_registry(
         model_family, model_path, ta_key, ta_endpoint
     )
-    analyzer = AnalyzerEngine(nlp_engine=nlp_engine, registry=registry)
+    analyzer = AnalyzerEngine(
+        nlp_engine=nlp_engine,
+        registry=registry,
+        supported_languages=list(nlp_engine.get_supported_languages()),
+    )
     return analyzer
 
 
@@ -97,9 +101,10 @@ def get_supported_entities(
     model_family: str, model_path: str, ta_key: str, ta_endpoint: str
 ):
     """Return supported entities from the Analyzer Engine."""
-    return analyzer_engine(
-        model_family, model_path, ta_key, ta_endpoint
-    ).get_supported_entities() + ["GENERIC_PII"]
+    engine = analyzer_engine(model_family, model_path, ta_key, ta_endpoint)
+    return engine.get_supported_entities(
+        engine.supported_languages[0]
+    ) + ["GENERIC_PII"]
 
 
 @st.cache_data

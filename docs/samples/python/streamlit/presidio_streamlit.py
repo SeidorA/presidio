@@ -11,6 +11,7 @@ from annotated_text import annotated_text
 from streamlit_tags import st_tags
 
 from openai_fake_data_generator import OpenAIParams
+from presidio_nlp_engine_config import spacy_lang_code
 from presidio_helpers import (
     get_supported_entities,
     analyze,
@@ -34,6 +35,8 @@ logger = logging.getLogger("presidio-streamlit")
 
 
 allow_other_models = os.getenv("ALLOW_OTHER_MODELS", False)
+# Seidor: local-only by default (no Azure/OpenAI, no telemetry). Set LOCAL_ONLY=0 to restore upstream behavior.
+LOCAL_ONLY = os.getenv("LOCAL_ONLY", "1") != "0"
 
 
 # Sidebar
@@ -52,6 +55,7 @@ model_help_text = """
 st_ta_key = st_ta_endpoint = ""
 
 model_list = [
+    "spaCy/es_core_news_lg",
     "spaCy/en_core_web_lg",
     "flair/ner-english-large",
     "HuggingFace/obi/deid_roberta_i2b2",
@@ -60,13 +64,15 @@ model_list = [
     "Azure AI Language",
     "Other",
 ]
-if not allow_other_models:
+if LOCAL_ONLY:
+    model_list = ["spaCy/es_core_news_lg"]
+elif not allow_other_models:
     model_list.pop()
 # Select model
 st_model = st.sidebar.selectbox(
     "NER model package",
     model_list,
-    index=2,
+    index=0,
     help=model_help_text,
 )
 
@@ -103,7 +109,9 @@ logger.debug(f"analyzer_params: {analyzer_params}")
 
 st_operator = st.sidebar.selectbox(
     "De-identification approach",
-    ["redact", "replace", "synthesize", "highlight", "mask", "hash", "encrypt"],
+    ["redact", "replace", "highlight", "mask", "hash", "encrypt"]
+    if LOCAL_ONLY
+    else ["redact", "replace", "synthesize", "highlight", "mask", "hash", "encrypt"],
     index=1,
     help="""
     Select which manipulation to the text is requested after PII has been identified.\n
@@ -267,8 +275,11 @@ analyzer_load_state = st.info("Starting Presidio analyzer...")
 
 analyzer_load_state.empty()
 
+# Language follows the selected spaCy model (es_core_news_lg -> "es")
+st_language = spacy_lang_code(st_model) if st_model_package.lower() == "spacy" else "en"
+
 # Read default text
-with open("demo_text.txt") as f:
+with open("demo_text_es.txt" if st_language == "es" else "demo_text.txt") as f:
     demo_text = f.readlines()
 
 # Create two columns for before and after
@@ -301,7 +312,7 @@ try:
         *analyzer_params,
         text=st_text,
         entities=st_entities,
-        language="en",
+        language=st_language,
         score_threshold=st_threshold,
         return_decision_process=st_return_decision_process,
         allow_list=st_allow_list,
@@ -373,14 +384,16 @@ except Exception as e:
     traceback.print_exc()
     st.error(e)
 
-components.html(
-    """
-    <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "h7f8bp42n8");
-    </script>
-    """
-)
+if not LOCAL_ONLY:
+    # Upstream telemetry (Microsoft Clarity); disabled by default for local-only use.
+    components.html(
+        """
+        <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "h7f8bp42n8");
+        </script>
+        """
+    )

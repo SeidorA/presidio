@@ -75,7 +75,15 @@ Corpus: 10 fixtures sintéticos (~3,5 KB de texto en total), analyzer en Docker 
 
 Para extrapolar, estas cifras son **bajas y no representativas** de documentos grandes: el corpus es muy pequeño. Conclusión: con 1 worker y `es_core_news_lg` el orden de magnitud es de unos pocos MB/min por worker; para volúmenes reales hay que escalar workers (`WORKERS`, `N_PROCESS`) y medir con un corpus mayor.
 
+## Demo original adaptada
+
+`docs/samples/python/streamlit` (la demo de Presidio) se adaptó en esta rama: modelo `es_core_news_lg` por defecto (idioma `es` inferido del modelo), recognizers de Chile registrados automáticamente y texto de ejemplo en español (`demo_text_es.txt`). Por defecto corre en modo local (`LOCAL_ONLY=1`): sin Azure/OpenAI y **sin el script de telemetría de Microsoft Clarity** que la demo original inyectaba. `LOCAL_ONLY=0` restaura el comportamiento upstream.
+
+```bash
+cd docs/samples/python/streamlit && streamlit run presidio_streamlit.py --server.port 8502   # además: uv pip install openai
+```
+
 ## Notas
 
-- La demo upstream (`docs/samples/python/streamlit`) está fijada a inglés (`lang_code: "en"` en `presidio_nlp_engine_config.py`) y arrastra torch/flair/stanza. Para no tocarla se creó `seidor-es-cl/streamlit/app_es_cl.py`.
+- La demo upstream (`docs/samples/python/streamlit`) está fijada a inglés (`lang_code: "en"` en `presidio_nlp_engine_config.py`) y arrastra torch/flair/stanza. Se conserva además la demo mínima `seidor-es-cl/streamlit/app_es_cl.py` (sin modificar el sample).
 - Todos los datos de `fixtures/` son inventados (RUTs generados por script). Nada sale de la máquina: sin LLM ni APIs externas.

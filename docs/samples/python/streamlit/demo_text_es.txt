@@ -1,0 +1,12 @@
+Ejemplos de datos personales chilenos (todos inventados):
+
+Hola, me llamo Camila Rojas Soto y vivo en Valparaíso. Mi RUT es 12.345.678-5 (también 12345678-5) y mi celular es +56 9 8765 4321.
+Escríbeme a camila.rojas@example.test o llama al +56 2 2345 6789.
+
+Mi tarjeta es 4095-2609-9393-4932 y mi IP es 192.168.0.1.
+
+Ficha clínica: paciente Matías Tapia Araya, RUT 7.654.321-6. Diagnóstico CIE-10 J45.9 (asma), con licencia médica por 7 días.
+Previsión: Fonasa. Se entrega receta médica.
+
+Factura N° 48201937 por $ 1.250.000 (esto no es un RUT).
+RUT mal digitado: 12.345.678-4
