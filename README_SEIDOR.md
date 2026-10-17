@@ -48,7 +48,7 @@ Streamlit :8501 ─► librería in-process, o REST al analyzer
 
 ## Qué funcionó
 
-- 44 tests pytest pasan (RUT válidos/ inválidos/ K/ DV 0, falsos positivos tipo factura y montos, teléfono, CIE-10, términos de salud).
+- Los tests pytest pasan (`seidor-es-cl/tests`) (RUT válidos/ inválidos/ K/ DV 0, falsos positivos tipo factura y montos, teléfono, CIE-10, términos de salud).
 - RUT con puntos/guion detectados de forma fiable; RUT con DV mal digitado no se reporta; números de factura/orden no se marcan como RUT con score ≥ 0.4.
 - Analyzer, anonymizer e image-redactor responden vía curl; anonymizer reemplaza `CL_RUT` correctamente.
 - OCR en español sobre un escaneado sintético limpio (PNG/Arial 44 px): texto, RUT y teléfono leídos correctamente (incluyendo tildes con `-l spa`); redacción visual de nombre, RUT, CIE-10 y teléfono.

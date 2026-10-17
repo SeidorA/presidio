@@ -3,6 +3,7 @@ import argparse
 import csv
 import sys
 import time
+from urllib.parse import urlparse
 from pathlib import Path
 
 import fitz  # pymupdf
@@ -29,8 +30,12 @@ def main():
     ap.add_argument("--url", default="http://localhost:5002")
     ap.add_argument("--fixtures", default=str(ROOT / "fixtures"))
     ap.add_argument("--out", default=str(ROOT / "inventory.csv"))
+    ap.add_argument("--allow-remote", action="store_true", help="allow a non-local analyzer URL (sends text off-host)")
     ap.add_argument("--repeat", type=int, default=1, help="repeat the corpus N times to time it")
     a = ap.parse_args()
+    host = urlparse(a.url).hostname
+    if host not in {"localhost", "127.0.0.1", "::1"} and not a.allow_remote:
+        sys.exit(f"refusing non-local analyzer {host}: documents may contain personal data (use --allow-remote)")
 
     files = sorted(p for p in Path(a.fixtures).iterdir() if p.suffix in {".txt", ".csv", ".pdf"})
     rows, total_bytes, elapsed = [], 0, 0.0

@@ -21,4 +21,4 @@ USER 1001
 EXPOSE ${PORT}
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:${PORT}/health || exit 1
-CMD ["sh", "-c", "exec gunicorn -w $WORKERS -b 0.0.0.0:$PORT --timeout 180 'seidor_cl.image_app:create_app()'"]
+CMD ["sh", "-c", "exec gunicorn --preload -w $WORKERS -b 0.0.0.0:$PORT --timeout 180 'seidor_cl.image_app:create_app()'"]

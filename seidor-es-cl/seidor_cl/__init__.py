@@ -16,8 +16,10 @@ def cl_recognizers(language: str = "es"):
 
 def register_cl_recognizers(registry, language: str = "es"):
     """Add the custom recognizers to an existing RecognizerRegistry."""
+    existing = {(r.name, r.supported_language) for r in registry.recognizers}
     for recognizer in cl_recognizers(language):
-        registry.add_recognizer(recognizer)
+        if (recognizer.name, recognizer.supported_language) not in existing:
+            registry.add_recognizer(recognizer)
     return registry
 
 
