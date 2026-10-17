@@ -15,6 +15,7 @@ RUN python -m spacy download es_core_news_lg
 
 COPY presidio-image-redactor/ /app/
 COPY seidor-es-cl/seidor_cl /app/seidor-es-cl/seidor_cl
+COPY seidor-es-cl/conf /app/seidor-es-cl/conf
 RUN useradd -m -u 1001 presidio && chown -R presidio:presidio /app
 USER 1001
 EXPOSE ${PORT}

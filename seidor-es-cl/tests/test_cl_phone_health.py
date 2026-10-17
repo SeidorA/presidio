@@ -1,20 +1,5 @@
 import pytest
-from presidio_analyzer import AnalyzerEngine, RecognizerRegistry
-from presidio_analyzer.nlp_engine import NlpEngineProvider
 
-from seidor_cl import cl_recognizers
-
-
-@pytest.fixture(scope="module")
-def analyzer():
-    nlp = NlpEngineProvider(nlp_configuration={
-        "nlp_engine_name": "spacy",
-        "models": [{"lang_code": "es", "model_name": "es_core_news_lg"}],
-    }).create_engine()
-    registry = RecognizerRegistry(supported_languages=["es"])
-    for r in cl_recognizers():
-        registry.add_recognizer(r)
-    return AnalyzerEngine(nlp_engine=nlp, registry=registry, supported_languages=["es"])
 
 
 def found(analyzer, text, entity):
@@ -37,3 +22,13 @@ def test_icd10_with_context(analyzer):
 def test_health_terms(analyzer):
     got = [t.lower() for t in found(analyzer, "Licencia médica por Fonasa e isapre, receta adjunta", "ES_HEALTH_TERM")]
     assert {"licencia médica", "fonasa", "isapre", "receta"} <= set(got)
+
+
+@pytest.mark.parametrize("text", [
+    "Factura 12345678901234",
+    "Codigo 5698765432101",
+    "Total 1.234.567",
+    "Fecha 2026-10-17",
+])
+def test_phone_negatives(analyzer, text):
+    assert not found(analyzer, text, "CL_PHONE_NUMBER")

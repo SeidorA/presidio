@@ -25,6 +25,6 @@ RUN useradd -m -u 1001 presidio && chown -R presidio:presidio /app
 USER 1001
 
 EXPOSE ${PORT}
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=3s --start-period=120s --retries=3 \
     CMD curl -f http://localhost:${PORT}/health || exit 1
-CMD ["sh", "-c", "exec gunicorn -w $WORKERS -b 0.0.0.0:$PORT --timeout 120 'seidor_cl.app:create_app()'"]
+CMD ["sh", "-c", "exec gunicorn --preload -w $WORKERS -b 0.0.0.0:$PORT --timeout 120 'seidor_cl.app:create_app()'"]

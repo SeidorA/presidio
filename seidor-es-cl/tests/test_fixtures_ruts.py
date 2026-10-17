@@ -4,10 +4,8 @@ from pathlib import Path
 
 import fitz
 import pytest
-from presidio_analyzer import AnalyzerEngine, RecognizerRegistry
-from presidio_analyzer.nlp_engine import NlpEngineProvider
 
-from seidor_cl import cl_recognizers, is_valid_rut
+from seidor_cl import is_valid_rut
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 MANIFEST = json.loads((FIXTURES / "manifest.json").read_text())
@@ -15,23 +13,16 @@ MANIFEST = json.loads((FIXTURES / "manifest.json").read_text())
 TEXT_FIXTURES = {k: v for k, v in MANIFEST.items() if "escaneado" not in k}
 
 
-@pytest.fixture(scope="module")
-def analyzer():
-    nlp = NlpEngineProvider(nlp_configuration={
-        "nlp_engine_name": "spacy",
-        "models": [{"lang_code": "es", "model_name": "es_core_news_lg"}],
-    }).create_engine()
-    registry = RecognizerRegistry(supported_languages=["es"])
-    for r in cl_recognizers():
-        registry.add_recognizer(r)
-    return AnalyzerEngine(nlp_engine=nlp, registry=registry, supported_languages=["es"])
-
-
 def read(name):
     path = FIXTURES / name
     if path.suffix == ".pdf":
         return "\n".join(p.get_text() for p in fitz.open(path))
     return path.read_text(encoding="utf-8")
+
+
+def test_manifest_matches_fixture_files():
+    on_disk = {p.name for p in FIXTURES.iterdir() if p.suffix in {".txt", ".csv", ".pdf"}}
+    assert on_disk == set(MANIFEST)
 
 
 @pytest.mark.parametrize("fname,entry", MANIFEST.items())
