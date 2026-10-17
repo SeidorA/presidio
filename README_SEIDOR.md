@@ -25,7 +25,7 @@ streamlit run seidor-es-cl/streamlit/app_es_cl.py --server.port 8501   # http://
 # 4) Pruebas e inventario
 python seidor-es-cl/scripts/generate_fixtures.py     # regenera fixtures sintéticos (seed fija)
 cd seidor-es-cl && python -m pytest tests -q
-python scripts/run_inventory.py --url http://localhost:5002   # -> inventory.csv
+python scripts/run_inventory.py --url http://localhost:5002   # -> inventory.csv (generado, no versionado)
 ```
 
 Puertos (verificados en `docker-compose.yml` y Dockerfiles): anonymizer 5001, analyzer 5002, image-redactor 5003 (el contenedor escucha en `PORT`, aquí 3000).
@@ -48,7 +48,7 @@ Streamlit :8501 ─► librería in-process, o REST al analyzer
 
 ## Qué funcionó
 
-- 35 tests pytest pasan (RUT válidos/ inválidos/ K/ DV 0, falsos positivos tipo factura y montos, teléfono, CIE-10, términos de salud).
+- 44 tests pytest pasan (RUT válidos/ inválidos/ K/ DV 0, falsos positivos tipo factura y montos, teléfono, CIE-10, términos de salud).
 - RUT con puntos/guion detectados de forma fiable; RUT con DV mal digitado no se reporta; números de factura/orden no se marcan como RUT con score ≥ 0.4.
 - Analyzer, anonymizer e image-redactor responden vía curl; anonymizer reemplaza `CL_RUT` correctamente.
 - OCR en español sobre un escaneado sintético limpio (PNG/Arial 44 px): texto, RUT y teléfono leídos correctamente (incluyendo tildes con `-l spa`); redacción visual de nombre, RUT, CIE-10 y teléfono.

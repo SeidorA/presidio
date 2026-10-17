@@ -6,13 +6,12 @@ import pandas as pd
 import requests
 import streamlit as st
 from annotated_text import annotated_text
-from presidio_analyzer import AnalyzerEngine, RecognizerRegistry
-from presidio_analyzer.nlp_engine import NlpEngineProvider
+from presidio_analyzer import RecognizerResult
 from presidio_anonymizer import AnonymizerEngine
 from presidio_anonymizer.entities import OperatorConfig
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from seidor_cl import register_cl_recognizers  # noqa: E402
+from seidor_cl.engine import build_analyzer  # noqa: E402
 
 st.set_page_config(page_title="Presidio ES/CL", layout="wide")
 st.title("Presidio · Español + Chile (Ley 21.719)")
@@ -26,18 +25,7 @@ DEFAULT = (
 
 @st.cache_resource
 def get_engine():
-    nlp = NlpEngineProvider(nlp_configuration={
-        "nlp_engine_name": "spacy",
-        "models": [{"lang_code": "es", "model_name": "es_core_news_lg"}],
-        "ner_model_configuration": {
-            "model_to_presidio_entity_mapping": {"PER": "PERSON", "LOC": "LOCATION", "ORG": "ORGANIZATION"},
-            "labels_to_ignore": ["MISC"],
-        },
-    }).create_engine()
-    registry = RecognizerRegistry(supported_languages=["es"])
-    registry.load_predefined_recognizers(languages=["es"], nlp_engine=nlp)
-    register_cl_recognizers(registry, "es")
-    return AnalyzerEngine(nlp_engine=nlp, registry=registry, supported_languages=["es"])
+    return build_analyzer()
 
 
 mode = st.sidebar.radio("Motor", ["Librería (in-process)", "REST analyzer dockerizado"])
@@ -64,7 +52,6 @@ if st.button("Analizar", type="primary"):
     parts.append(text[pos:])
     annotated_text(*parts)
     st.dataframe(pd.DataFrame([{**i, "texto": text[i["start"]:i["end"]]} for i in items]))
-    from presidio_analyzer import RecognizerResult
     rr = [RecognizerResult(i["entity_type"], i["start"], i["end"], i["score"]) for i in items]
     ops = {"DEFAULT": OperatorConfig(operator, {"masking_char": "*", "chars_to_mask": 20, "from_end": False} if operator == "mask" else {})}
     st.code(AnonymizerEngine().anonymize(text, rr, ops).text)

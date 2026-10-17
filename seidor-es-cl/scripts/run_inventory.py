@@ -54,6 +54,9 @@ def main():
         w.writerows(rows)
     mb = total_bytes / 1e6
     print(f"{len(rows)} detections -> {a.out}")
+    if elapsed <= 0:
+        print("no text analyzed; throughput not computed")
+        return
     print(f"throughput: {mb:.4f} MB in {elapsed:.1f}s = {mb / elapsed * 60:.2f} MB/min (text extracted, {a.repeat}x corpus)")
 
 

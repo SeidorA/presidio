@@ -1,10 +1,8 @@
 """Dockerized image-redactor entrypoint: Spanish OCR (tesseract spa) + Spanish analyzer."""
 from app import Server  # presidio-image-redactor/app.py, unmodified
-from presidio_analyzer import AnalyzerEngine, RecognizerRegistry
-from presidio_analyzer.nlp_engine import NlpEngineProvider
 from presidio_image_redactor import ImageAnalyzerEngine, ImageRedactorEngine
 
-from seidor_cl import register_cl_recognizers
+from seidor_cl.engine import build_analyzer
 
 
 class EsImageAnalyzerEngine(ImageAnalyzerEngine):
@@ -17,15 +15,7 @@ class EsImageAnalyzerEngine(ImageAnalyzerEngine):
 
 
 def build_engine() -> ImageRedactorEngine:  # noqa: D103
-    nlp = NlpEngineProvider(nlp_configuration={
-        "nlp_engine_name": "spacy",
-        "models": [{"lang_code": "es", "model_name": "es_core_news_lg"}],
-    }).create_engine()
-    registry = RecognizerRegistry(supported_languages=["es"])
-    registry.load_predefined_recognizers(languages=["es"], nlp_engine=nlp)
-    register_cl_recognizers(registry, "es")
-    analyzer = AnalyzerEngine(nlp_engine=nlp, registry=registry, supported_languages=["es"])
-    return ImageRedactorEngine(EsImageAnalyzerEngine(analyzer_engine=analyzer))
+    return ImageRedactorEngine(EsImageAnalyzerEngine(analyzer_engine=build_analyzer()))
 
 
 def create_app():  # noqa: D103

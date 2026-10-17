@@ -147,3 +147,5 @@ mkdocs/
 # seidor-es-cl
 seidor-es-cl/.pytest_cache/
 __pycache__/
+.atl/
+seidor-es-cl/inventory.csv

@@ -10,7 +10,7 @@ class ClPhoneRecognizer(PatternRecognizer):
     COUNTRY_CODE = "cl"
 
     PATTERNS = [
-        Pattern("Movil con +56", r"(?<!\w)\+?56[\s-]?9[\s-]?\d{4}[\s-]?\d{4}\b", 0.7),
+        Pattern("Movil con +56", r"(?<![\w+])(?:\+56[\s-]?|56[\s-])9[\s-]?\d{4}[\s-]?\d{4}\b", 0.7),
         Pattern("Fijo RM con +56", r"(?<!\w)\+56[\s-]?2[\s-]?\d{4}[\s-]?\d{4}\b", 0.6),
         Pattern("Movil 9 XXXX XXXX", r"(?<!\w)9[\s-]\d{4}[\s-]\d{4}\b", 0.3),
         Pattern("Movil 9 digitos", r"(?<!\w)9\d{8}\b", 0.05),
