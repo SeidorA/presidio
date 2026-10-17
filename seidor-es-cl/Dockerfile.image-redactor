@@ -1,0 +1,23 @@
+# Build from the repo root:  docker build -f seidor-es-cl/Dockerfile.image-redactor .
+FROM python:3.13-slim
+
+ENV PIP_NO_CACHE_DIR=1 UV_PROJECT_ENVIRONMENT=/usr/local \
+    PYTHONPATH=/app:/app/seidor-es-cl PORT=3000 WORKERS=1
+WORKDIR /app
+RUN apt-get update \
+  && apt-get install build-essential tesseract-ocr tesseract-ocr-spa ffmpeg libsm6 libxext6 curl --no-install-recommends -y \
+  && rm -rf /var/lib/apt/lists/* && tesseract --list-langs
+
+COPY presidio-image-redactor/pyproject.toml presidio-image-redactor/uv.lock /app/
+RUN pip install uv==0.11.6 \
+    && uv sync --locked --no-cache --no-default-groups --extra server --no-install-project
+RUN python -m spacy download es_core_news_lg
+
+COPY presidio-image-redactor/ /app/
+COPY seidor-es-cl/seidor_cl /app/seidor-es-cl/seidor_cl
+RUN useradd -m -u 1001 presidio && chown -R presidio:presidio /app
+USER 1001
+EXPOSE ${PORT}
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/health || exit 1
+CMD ["sh", "-c", "exec gunicorn -w $WORKERS -b 0.0.0.0:$PORT --timeout 180 'seidor_cl.image_app:create_app()'"]

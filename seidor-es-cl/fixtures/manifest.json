@@ -1,0 +1,83 @@
+{
+  "correo_01.txt": {
+    "valid_ruts": [
+      "23.417.458-4"
+    ],
+    "invalid_ruts": [],
+    "phones": [
+      "+56 9 1271 5910"
+    ]
+  },
+  "correo_02.txt": {
+    "valid_ruts": [
+      "20269155-2"
+    ],
+    "invalid_ruts": [],
+    "phones": []
+  },
+  "correo_03_falsos_positivos.txt": {
+    "valid_ruts": [],
+    "invalid_ruts": [
+      "12764358-0"
+    ],
+    "phones": []
+  },
+  "licencia_medica_01.txt": {
+    "valid_ruts": [
+      "16.052.163-5"
+    ],
+    "invalid_ruts": [],
+    "phones": []
+  },
+  "licencia_medica_02.txt": {
+    "valid_ruts": [
+      "10.254.618-0"
+    ],
+    "invalid_ruts": [],
+    "phones": []
+  },
+  "planilla_01.csv": {
+    "valid_ruts": [
+      "20.498.164-7",
+      "13.555.779-K",
+      "24.991.355-3",
+      "7.653.777-1",
+      "23107204-7"
+    ],
+    "invalid_ruts": [
+      "22677018-0"
+    ],
+    "phones": []
+  },
+  "planilla_02.csv": {
+    "valid_ruts": [
+      "145855799",
+      "19.715.949-9",
+      "22828346-0",
+      "7075001-5"
+    ],
+    "invalid_ruts": [],
+    "phones": []
+  },
+  "ficha_paciente_01.txt": {
+    "valid_ruts": [
+      "24473226-7"
+    ],
+    "invalid_ruts": [],
+    "phones": []
+  },
+  "documento_texto_09.pdf": {
+    "valid_ruts": [
+      "22.383.781-6"
+    ],
+    "invalid_ruts": [],
+    "phones": []
+  },
+  "documento_escaneado_10.pdf": {
+    "valid_ruts": [
+      "15.454.566-2"
+    ],
+    "invalid_ruts": [],
+    "phones": []
+  }
+}

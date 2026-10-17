@@ -1,0 +1,23 @@
+# Run from the repo root:  docker compose -f seidor-es-cl/docker-compose.es-cl.yml up -d --build
+# No Ollama / no external services: everything is local.
+name: presidio-es-cl
+services:
+  analyzer:
+    build:
+      context: ..
+      dockerfile: seidor-es-cl/Dockerfile
+    environment: [PORT=3000]
+    ports: ["5002:3000"]
+    restart: unless-stopped
+  anonymizer:
+    build: ../presidio-anonymizer
+    environment: [PORT=3000]
+    ports: ["5001:3000"]
+    restart: unless-stopped
+  image-redactor:
+    build:
+      context: ..
+      dockerfile: seidor-es-cl/Dockerfile.image-redactor
+    environment: [PORT=3000]
+    ports: ["5003:3000"]
+    restart: unless-stopped

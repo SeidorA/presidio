@@ -1,0 +1,96 @@
+archivo,tipo_entidad,score,inicio,fin,texto_detectado
+correo_01.txt,CL_RUT,1.0,70,82,23.417.458-4
+correo_01.txt,CL_PHONE_NUMBER,1.0,96,111,+56 9 1271 5910
+correo_01.txt,PERSON,0.85,42,58,Tomás Soto Araya
+correo_01.txt,LOCATION,0.85,153,160,Saludos
+correo_02.txt,CL_RUT,1.0,74,84,20269155-2
+correo_02.txt,CL_PHONE_NUMBER,1.0,125,140,+56 9 8503 8447
+correo_02.txt,PERSON,0.85,43,68,Sebastián Contreras Araya
+correo_02.txt,ORGANIZATION,0.85,86,94,Contacto
+correo_02.txt,ORGANIZATION,0.85,96,118,sebastian@example.test
+correo_02.txt,PHONE_NUMBER,0.4,125,140,+56 9 8503 8447
+correo_03_falsos_positivos.txt,ORGANIZATION,0.85,43,48,Orden
+documento_texto_09.pdf,CL_RUT,1.0,58,70,22.383.781-6
+documento_texto_09.pdf,CL_PHONE_NUMBER,1.0,119,134,+56 9 4330 6534
+documento_texto_09.pdf,PERSON,0.85,34,52,Matías Araya Araya
+documento_texto_09.pdf,PERSON,0.85,103,117,"J45.9
+Teléfono"
+documento_texto_09.pdf,ICD10_CODE,0.65,103,108,J45.9
+documento_texto_09.pdf,ES_HEALTH_TERM,0.4,71,86,Licencia médica
+documento_texto_09.pdf,ES_HEALTH_TERM,0.4,91,102,diagnóstico
+documento_texto_09.pdf,PHONE_NUMBER,0.4,119,134,+56 9 4330 6534
+ficha_paciente_01.txt,CL_RUT,1.0,53,63,24473226-7
+ficha_paciente_01.txt,CL_PHONE_NUMBER,1.0,149,164,+56 9 6989 9775
+ficha_paciente_01.txt,PERSON,0.85,22,47,Sebastián Contreras Silva
+ficha_paciente_01.txt,LOCATION,0.85,125,130,I10.0
+ficha_paciente_01.txt,ICD10_CODE,0.65,125,130,I10.0
+ficha_paciente_01.txt,ES_HEALTH_TERM,0.4,0,13,FICHA CLÍNICA
+ficha_paciente_01.txt,ES_HEALTH_TERM,0.4,64,70,Receta
+ficha_paciente_01.txt,ES_HEALTH_TERM,0.4,91,102,Diagnóstico
+licencia_medica_01.txt,CL_RUT,1.0,62,74,16.052.163-5
+licencia_medica_01.txt,CL_PHONE_NUMBER,1.0,151,166,+56 9 4429 8449
+licencia_medica_01.txt,PERSON,0.85,38,56,Matías Tapia Rojas
+licencia_medica_01.txt,PERSON,0.85,101,117,"J45.9
+Previsión:"
+licencia_medica_01.txt,LOCATION,0.85,141,149,Teléfono
+licencia_medica_01.txt,ICD10_CODE,0.65,101,106,J45.9
+licencia_medica_01.txt,ES_HEALTH_TERM,0.4,0,15,LICENCIA MÉDICA
+licencia_medica_01.txt,ES_HEALTH_TERM,0.4,75,86,Diagnóstico
+licencia_medica_01.txt,ES_HEALTH_TERM,0.4,118,124,Fonasa
+licencia_medica_01.txt,PHONE_NUMBER,0.4,151,166,+56 9 4429 8449
+licencia_medica_02.txt,CL_RUT,1.0,62,74,10.254.618-0
+licencia_medica_02.txt,CL_PHONE_NUMBER,1.0,158,173,+56 9 6849 1091
+licencia_medica_02.txt,PERSON,0.85,38,56,Camila Muñoz Rojas
+licencia_medica_02.txt,PERSON,0.85,101,139,"J45.9
+Previsión: Isapre Colmena
+Reposo"
+licencia_medica_02.txt,LOCATION,0.85,148,156,Teléfono
+licencia_medica_02.txt,ICD10_CODE,0.65,101,106,J45.9
+licencia_medica_02.txt,ES_HEALTH_TERM,0.4,0,15,LICENCIA MÉDICA
+licencia_medica_02.txt,ES_HEALTH_TERM,0.4,75,86,Diagnóstico
+licencia_medica_02.txt,ES_HEALTH_TERM,0.4,118,124,Isapre
+licencia_medica_02.txt,PHONE_NUMBER,0.4,158,173,+56 9 6849 1091
+planilla_01.csv,ORGANIZATION,0.85,7,10,rut
+planilla_01.csv,PERSON,0.85,32,43,Tomás Muñoz
+planilla_01.csv,CL_RUT,0.85,52,64,20.498.164-7
+planilla_01.csv,PERSON,0.85,100,119,"F-9388
+Camila Muñoz"
+planilla_01.csv,CL_RUT,0.85,126,138,13.555.779-K
+planilla_01.csv,LOCATION,0.85,175,216,"F-5250
+Tomás Fuentes Rojas,22677018-0,+56"
+planilla_01.csv,LOCATION,0.85,248,267,"F-9395
+Matías Rojas"
+planilla_01.csv,CL_RUT,0.85,274,286,24.991.355-3
+planilla_01.csv,CL_RUT,0.85,352,363,7.653.777-1
+planilla_01.csv,LOCATION,0.85,403,421,"F-9669
+Tomás Araya"
+planilla_01.csv,CL_RUT,0.75,432,442,23107204-7
+planilla_01.csv,CL_PHONE_NUMBER,0.7,65,80,+56 9 8203 9071
+planilla_01.csv,CL_PHONE_NUMBER,0.7,139,154,+56 9 8909 6893
+planilla_01.csv,CL_PHONE_NUMBER,0.7,213,228,+56 9 7099 6822
+planilla_01.csv,CL_PHONE_NUMBER,0.7,287,302,+56 9 2884 8627
+planilla_01.csv,CL_PHONE_NUMBER,0.7,364,379,+56 9 3452 6796
+planilla_01.csv,CL_PHONE_NUMBER,0.7,443,458,+56 9 1600 1475
+planilla_01.csv,PHONE_NUMBER,0.4,59,64,164-7
+planilla_01.csv,PHONE_NUMBER,0.4,65,80,+56 9 8203 9071
+planilla_01.csv,PHONE_NUMBER,0.4,139,154,+56 9 8909 6893
+planilla_01.csv,PHONE_NUMBER,0.4,287,302,+56 9 2884 8627
+planilla_01.csv,PHONE_NUMBER,0.4,364,379,+56 9 3452 6796
+planilla_02.csv,ORGANIZATION,0.85,7,10,rut
+planilla_02.csv,PERSON,0.85,32,44,Camila Araya
+planilla_02.csv,LOCATION,0.85,97,118,"F-3283
+Valentina Soto"
+planilla_02.csv,CL_RUT,0.85,127,139,19.715.949-9
+planilla_02.csv,PERSON,0.85,186,220,"Joaquín Tapia Silva,22828346-0,+56"
+planilla_02.csv,PERSON,0.85,330,337,"F-9823
+"
+planilla_02.csv,CL_RUT,0.75,206,216,22828346-0
+planilla_02.csv,CL_RUT,0.75,283,292,7075001-5
+planilla_02.csv,CL_PHONE_NUMBER,0.7,61,76,+56 9 6749 7650
+planilla_02.csv,CL_PHONE_NUMBER,0.7,140,155,+56 9 9792 4316
+planilla_02.csv,CL_PHONE_NUMBER,0.7,217,232,+56 9 4080 2842
+planilla_02.csv,CL_PHONE_NUMBER,0.7,293,308,+56 9 1140 7159
+planilla_02.csv,PHONE_NUMBER,0.4,61,76,+56 9 6749 7650
+planilla_02.csv,PHONE_NUMBER,0.4,140,155,+56 9 9792 4316
+planilla_02.csv,PHONE_NUMBER,0.4,217,232,+56 9 4080 2842
+planilla_02.csv,CL_RUT,0.05,51,60,145855799
